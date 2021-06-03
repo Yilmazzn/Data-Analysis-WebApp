@@ -1,9 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 
 const drawerWidth = 200
-const darkColor = '#191c24'
-const lightColor = '#4c5570'
-const appBarColor = '#11141c'
 
 
 const useStyles = makeStyles(theme => ({
@@ -13,20 +10,12 @@ const useStyles = makeStyles(theme => ({
       toolbar: {
         paddingRight: 24, // keep right padding when drawer closed
       },
-      toolbarIcon: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        padding: '0 8px',
-        ...theme.mixins.toolbar,
-      },
       appBar: {
         zIndex: theme.zIndex.drawer + 1,
         transition: theme.transitions.create(['width', 'margin'], {
           easing: theme.transitions.easing.sharp,
           duration: theme.transitions.duration.leavingScreen,
         }),
-        backgroundColor: appBarColor
       },
       appBarShift: {
         marginLeft: drawerWidth,
@@ -42,13 +31,11 @@ const useStyles = makeStyles(theme => ({
       drawerPaper: {
         position: 'relative',
         overflowX: 'hidden',
-        whiteSpace: 'nowrap',
         width: drawerWidth,
         transition: theme.transitions.create('width', {
           easing: theme.transitions.easing.sharp,
           duration: theme.transitions.duration.enteringScreen,
         }),
-        background: `linear-gradient(${appBarColor}, ${darkColor})`
       },
       drawerPaperClose: {
         overflowX: 'hidden',
@@ -64,9 +51,10 @@ const useStyles = makeStyles(theme => ({
       appBarSpacer: theme.mixins.toolbar,
       content: {
         flexGrow: 1,
+        flexDirection: 'row',
         height: '100vh',
         overflow: 'auto',
-        background: `linear-gradient(${darkColor}, ${lightColor})})`
+        background: `linear-gradient(#303342, #6a708f);`,
       },
       container: {
         paddingTop: theme.spacing(4),
@@ -83,7 +71,7 @@ const useStyles = makeStyles(theme => ({
       },
       listItemsGap: {
         ...theme.mixins.toolbar
-      }
+      },
 }))
  
 export default useStyles;

@@ -1,13 +1,17 @@
 
+import { makeStyles } from "@material-ui/core";
 import Main from "./Main/Main";
-import useStyles from "./styles";
+
+const useStyles = makeStyles((theme) => ({
+    
+}))
 
 const App = () => {
 
     const classes = useStyles()
 
     return (
-        <div className={classes.background}>
+        <div>
             <Main />
         </div>
     );
