@@ -8,15 +8,18 @@ import { createStore } from 'redux';
 import rootReducer from './Reducers/rootReducer';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import theme from './theme';
+import { BrowserRouter } from 'react-router-dom';
 
 const store = createStore(rootReducer, composeWithDevTools())
 
 ReactDOM.render(
     <Provider store={store}>
+        <BrowserRouter>
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <App />
         </ThemeProvider>
+        </BrowserRouter>
     </Provider>
     , document.getElementById("root")
 );

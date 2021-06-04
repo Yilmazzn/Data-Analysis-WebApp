@@ -1,11 +1,11 @@
-import { Button, Card, CardActions, CardContent, CardHeader, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, IconButton, makeStyles, Popover, TextField } from "@material-ui/core";
+import { Button, Card, CardActions, CardContent, CardHeader, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, IconButton, LinearProgress, Link, makeStyles, Popover, TextField, Typography } from "@material-ui/core";
 import { ExpandMore, MoreVert } from "@material-ui/icons";
-import clsx from "clsx";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 import { deleteProject } from "../../../Action_Creators/projectActions";
 import AlertDialog from "../../Dialogs/AlertDialog";
-import RenameDialog from "../../Dialogs/RenameDialog";
+import EditDialog from "../../Dialogs/EditDialog";;
 
 
 
@@ -16,16 +16,12 @@ const useStyles = makeStyles(theme => ({
     container: {
         display: 'flex'
     },
-    expand: {
-        transform: 'rotate(0deg)',
-        marginLeft: 'auto',
-        transition: theme.transitions.create('transform', {
-            duration: theme.transitions.duration.shortest,
-        }),
+    openButton: {
+        marginLeft: theme.spacing(1),
     },
-    expandOpen: {
-        transform: 'rotate(180deg)',
-    },
+    tag: {
+        marginBottom: theme.spacing(2)
+    }
 }))
 
 
@@ -33,7 +29,6 @@ const useStyles = makeStyles(theme => ({
 const ProjectCard = (props) => {
     const { project } = props; 
     const classes = useStyles();
-    const [expanded, setExpanded] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [renameOpen, setRenameOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
@@ -41,15 +36,20 @@ const ProjectCard = (props) => {
     const open = Boolean(anchorEl);
 
     const dispatch = useDispatch();
+    const history = useHistory(); 
 
     const handleDelete = () => {
         dispatch(deleteProject(project.id));
     }
 
+    const handleOpen = () => {
+        history.push(`/projects/${project.id}`)
+    }
+
 
     return ( 
         <Card className={classes.root}>
-            <CardHeader title={project.name} subheader="01.01.2021" 
+            <CardHeader title={project.name} subheader="01.01.2021" titleTypographyProps={{noWrap: true}}  subheaderTypographyProps={{variant: "body2"}}
             action={
                 <React.Fragment>
                     <IconButton aria-label="settings" onClick={e => setAnchorEl(e.currentTarget)}>
@@ -65,30 +65,33 @@ const ProjectCard = (props) => {
                                 horizontal: 'right',
                         }}
                         disableRestoreFocus>
-                        <Button onClick={() => setRenameOpen(true)} >Edit</Button>
-                        <Button onClick={() => setDeleteOpen(true)}>Delete</Button>
+                        <Button onClick={() => {setRenameOpen(true); setAnchorEl(null)}} >Edit</Button>
+                        <Button onClick={() => {setDeleteOpen(true); setAnchorEl(null)}}>Delete</Button>
                     </Popover>
                 </React.Fragment>
             }/>
             <Divider />
             <CardContent>
-                Graph, Status, etc. ...
+                <Chip variant="outlined" color="primary" label={project.category} className={classes.tag}/>
+                <LinearProgress variant="determinate" value={33} />
             </CardContent>
             <Divider />
             <CardContent>
                 {project.description}
             </CardContent>
             <CardActions disableSpacing>
-                <IconButton className={clsx(classes.expand, {[classes.expandOpen]: expanded})}
-                    onClick={() => setExpanded(!expanded)} aria-expanded={expanded} aria-label="show more">  
-                    <ExpandMore /> 
-                </IconButton>
+                <Button variant="outlined" color="secondary" onClick={handleOpen} className={classes.openButton}>
+                    Open
+                </Button>
             </CardActions>
-            {/* Dialog for Renaming */}
-            <RenameDialog open={renameOpen} setOpen={setRenameOpen} projectId={project.id}/>
+
+
+
+            {/* Dialogs */}
+            <EditDialog open={renameOpen} setOpen={setRenameOpen} projectId={project.id}/>
             <AlertDialog open={deleteOpen} setOpen={setDeleteOpen} onConfirm={handleDelete} label={`Are you sure you want to delete '${project.name}' ? `} />
         </Card>
     );
 }
- 
+
 export default ProjectCard;

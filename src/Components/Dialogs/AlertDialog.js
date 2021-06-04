@@ -20,7 +20,7 @@ const AlertDialog = (props) => {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={onConfirm} color="primary">
+                <Button onClick={onConfirm} color="secondary">
                     Confirm
                 </Button>
                 <Button onClick={() => setOpen(false)} color="primary" autoFocus>

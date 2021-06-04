@@ -9,55 +9,67 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import { useSelector } from 'react-redux';
+import { Typography } from '@material-ui/core';
 
-export const mainListItems = (
-  <div>
-    <ListItem button>
-      <ListItemIcon>
-        <DashboardIcon />
-      </ListItemIcon>
-      <ListItemText primary="Dashboard" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <ShoppingCartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Projects" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <PeopleIcon />
-      </ListItemIcon>
-      <ListItemText primary="Community" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <BarChartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Reports" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Integrations" />
-    </ListItem>
-  </div>
-);
+export const MainListItems = (props) => {
+
+  const { history } = props;
+
+  const loadPage = url => {
+    history.push(url);
+  }
+
+  return (
+    <div>
+      <ListItem button component="button" onClick={() => loadPage('/')}>
+        <ListItemIcon>
+          <DashboardIcon />
+        </ListItemIcon>
+        <ListItemText primary="Dashboard" />
+      </ListItem>
+      <ListItem button component="button" onClick={() => loadPage('/projects')}>
+        <ListItemIcon>
+          <ShoppingCartIcon />
+        </ListItemIcon>
+        <ListItemText primary="Projects" />
+      </ListItem>
+      <ListItem button>
+        <ListItemIcon>
+          <PeopleIcon />
+        </ListItemIcon>
+        <ListItemText primary="Community" />
+      </ListItem>
+      <ListItem button>
+        <ListItemIcon>
+          <BarChartIcon />
+        </ListItemIcon>
+        <ListItemText primary="Reports" />
+      </ListItem>
+      <ListItem button>
+        <ListItemIcon>
+          <LayersIcon />
+        </ListItemIcon>
+        <ListItemText primary="Integrations" />
+      </ListItem>
+    </div>
+    )
+  };
 
 
-export const SecondaryListItems = () => {
+export const SecondaryListItems = (props) => {
   
   const projects = useSelector(state => state.projects)
+  const { history } = props;
 
   return (
     <div>
         {projects.map(project => (
-          <ListItem button key={project.id}>
+          <ListItem button key={project.id} onClick={() => {history.push(`/projects/${project.id}`)}}>
             <ListItemIcon>
               <AssignmentIcon />
             </ListItemIcon>
-            <ListItemText primary={project.name} />
+            <ListItemText primary={project.name} primaryTypographyProps={{noWrap: true}}/>
+            
           </ListItem>
       ))}
     </div>

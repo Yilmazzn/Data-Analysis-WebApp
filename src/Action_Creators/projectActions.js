@@ -6,15 +6,17 @@ export const addProject = (project) => {
         payload: {
             id: ID(),
             name: project.name, 
-            description: project.description
+            description: project.description,
+            category: project.category,
+            step: 0
         }
     }
 } 
 
-export const renameProject = (id, name) => {
+export const editProject = (id, name, desc) => {
     return {
-        type: Type.RENAME_PROJECT, 
-        payload: {id: id, newName: name}
+        type: Type.EDIT_PROJECT, 
+        payload: {id: id, newName: name, newDesc: desc}
     }
 }
 

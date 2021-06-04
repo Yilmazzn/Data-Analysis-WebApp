@@ -18,10 +18,10 @@ const Dashboard = () => {
     const classes = useStyles();
 
     return ( 
-        <Grid container spacing={9} className={classes.container}>
+        <Grid container spacing={4} className={classes.container}>
             {projects.map(p => (
-                <Grid item xl={12} lg={12} md={12} xs={12} className={classes.cardItem}>
-                    <ProjectCard key={p.id} project={p}/>
+                <Grid item xl={12} lg={12} md={12} xs={12} className={classes.cardItem} key={p.id}>
+                    <ProjectCard project={p}/>
                 </Grid>
             ))}
             
