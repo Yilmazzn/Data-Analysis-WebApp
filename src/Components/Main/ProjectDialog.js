@@ -3,6 +3,7 @@ import { Add } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addProject } from "../../Action_Creators/projectActions";
+import { showSnackbar } from "../../Action_Creators/snackbarActions";
 
 
 const useStyles = makeStyles(theme => ({
@@ -36,6 +37,8 @@ const ProjectDialog = () => {
           description: description,
           category: 'Model'
         }))
+
+        dispatch(showSnackbar("success", `Project '${name}' created`))
 
         handleClose()
 

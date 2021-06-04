@@ -2,6 +2,9 @@ const ActionTypes = {
     ADD_PROJECT: 'ADD_PROJECT',
     EDIT_PROJECT: 'EDIT_PROJECT',
     DELETE_PROJECT: 'DELETE_PROJECT',
+
+    SHOW_SNACKBAR: 'SHOW_SNACKBAR',
+    CLOSE_SNACKBAR: 'CLOSE_SNACKBAR'
 }
 
 export default ActionTypes; 

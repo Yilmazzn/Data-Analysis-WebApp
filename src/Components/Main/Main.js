@@ -7,6 +7,7 @@ import ProjectDialog from "./ProjectDialog";
 import Dashboard from "./Dashboard/Dashboard";
 import { Route, Switch, useHistory } from "react-router-dom";
 import Project from "./Project/Project";
+import SnackbarFeedback from "../Snackbar/SnackbarFeedback";
 
 
 
@@ -38,6 +39,7 @@ const Main = () => {
             </Drawer>
 
             <main className={classes.content}>
+            <SnackbarFeedback />
                 <div className={classes.appBarSpacer} /> 
                 <Container maxWidth="xl" className={classes.container}>
                     <Switch>
