@@ -1,45 +1,59 @@
-import { Box, Card, CardActions, CardContent, Container, Grid, makeStyles, Stepper, Typography } from "@material-ui/core";
-import React, { useState } from "react";
+import { Box, Card, CardActions, CardContent, Container, Grid, makeStyles, Paper, Stepper, Tab, Tabs, Typography } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { ProjectSteps } from "../../../Model/Project";
+import Overview from "./Overview/Overview";
 import ProgressStepper from "./ProgressStepper";
 
 const useStyles = makeStyles(theme => ({
-    header: {
-        marginBottom: theme.spacing(2)
-    },
     stepper: {
 
     },
     card: {
         display: 'flex',
         flexDirection: 'column'
-    }
+    },
+    completed: {
 
+    },
+    circle: {
+
+    },
+    tab: {
+        marginTop: theme.spacing(-2.5),
+        marginBottom: theme.spacing(3)
+    },
+    container: {
+
+    }
 }))
 
 const Project = (props) => {
     const project = useSelector(state => state.projects.filter(p => p.id === props.match.params.id)[0])
     const classes = useStyles();
 
-    const [currentStep, setStep] = useState(project.step);
+    const [view, setView] = useState(0)
+
+    const handleTabChange = (event, newValue) => {
+        setView(newValue);
+    }
 
     return ( 
         <React.Fragment>
-            <div className={classes.header}>
-                <Typography variant="h2" > {project.name} </Typography>
-                <Box pt={4} />
-                <Typography variant="h4" > {project.description} </Typography>
-            </div>
-            <Grid item xl={10}>
-                <Card className={classes.card}>
-                    <ProgressStepper activeStep={currentStep} setActiveStep={setStep} />
-                    <CardActions>
-                    
-                    </CardActions>
-                </Card>
-            </Grid>
+        <Paper className={classes.tab}>
+            <Tabs value={view} onChange={handleTabChange} indicatorColor="primary" textColor="primary">
+                {tabs.map((tab, index) => <Tab label={tab} key={index} />)}
+            </Tabs>
+        </Paper>
+            <Container disableGutters className={classes.container}>
+                {view === 0 && <Overview project={project}/>}
+            </Container>
         </React.Fragment>
      );
 }
+
+const tabs = [
+    'Overview', 'Data'
+]
+
 export default Project;

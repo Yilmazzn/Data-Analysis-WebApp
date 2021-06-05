@@ -20,6 +20,9 @@ const projectReducer = (state = [], action) => {
         case Type.DELETE_PROJECT: 
             return state.filter(p => p.id !== action.payload);
 
+        case Type.STEP_NEXT_PROJECT: 
+            return state.map(p => p.id === action.payload ? {...p, step: p.step + 1} : p)
+
         default: 
         return state;
     }

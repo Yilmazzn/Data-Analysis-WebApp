@@ -1,6 +1,8 @@
 import { Box, Button, Grid, makeStyles, Step, StepLabel, Stepper, Typography } from "@material-ui/core";
 import { MaximizeTwoTone } from "@material-ui/icons";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { stepNextProject } from "../../../Action_Creators/projectActions";
 import { optionalSteps, ProjectSteps } from "../../../Model/Project";
 
 
@@ -29,17 +31,17 @@ const useStyles = makeStyles(theme => ({
 
 const ProgressStepper = (props) => {
 
-    const { activeStep, setActiveStep } = props;
     const classes = useStyles();
-    
+    const dispatch = useDispatch();
+    const { id, step } = props.project;
+
     const handleSkip = () => {
-        setActiveStep(Math.min(activeStep + 1, Object.keys(ProjectSteps).length - 1))
-        console.log(activeStep)
+        dispatch(stepNextProject(id))
     }
 
     return ( 
         <React.Fragment>
-        <Stepper activeStep={activeStep} alternativeLabel>
+        <Stepper activeStep={step} alternativeLabel>
             {Object.keys(ProjectSteps).map(index => (
                     <Step key={index}>
                         <StepLabel>{ProjectSteps[index]}</StepLabel>
@@ -48,9 +50,9 @@ const ProgressStepper = (props) => {
         </Stepper>
         <div className={classes.buttonGroup}>
             {
-                activeStep  !== Object.keys(ProjectSteps).length - 1 && 
+                step  !== Object.keys(ProjectSteps).length - 1 && 
                 <React.Fragment>
-                    <Button variant="contained" color="primary" className={classes.buttonLeft}>{buttonLabel[activeStep]}</Button>
+                    <Button variant="contained" color="primary" className={classes.buttonLeft}>{buttonLabel[step]}</Button>
                     <Button variant="outlined" color="primary" onClick={handleSkip} className={classes.buttonRight}> Skip </Button>
                 </React.Fragment>
             } 

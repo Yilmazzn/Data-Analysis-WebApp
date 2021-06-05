@@ -2,6 +2,7 @@ import { Button,  Dialog, DialogActions, DialogContent, DialogContentText, Dialo
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { editProject } from "../../Action_Creators/projectActions";
+import { showSnackbar } from "../../Action_Creators/snackbarActions";
 
 const EditDialog = (props) => {
         // Props
@@ -18,6 +19,7 @@ const EditDialog = (props) => {
     const handleEdit = () => {
         if(!nameError){
             dispatch(editProject(projectId, name, desc));
+            dispatch(showSnackbar("info", `Renamed to ${name}`))
             setOpen(false);
         }   
     }

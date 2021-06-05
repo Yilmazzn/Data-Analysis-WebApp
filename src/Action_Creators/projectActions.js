@@ -27,6 +27,14 @@ export const deleteProject = (id) => {
     }
 }
 
+
+export const stepNextProject = id =>  {
+    return {
+        type: Type.STEP_NEXT_PROJECT,
+        payload: id
+    }
+}
+
 // Generates IDs
 var ID = function () {
     // Math.random should be unique because of its seeding algorithm.

@@ -21,12 +21,14 @@ const Main = () => {
 
     return (
         <div className={classes.root}>
+            <SnackbarFeedback />
+
             <AppBar color="inherit" position="fixed" className={classes.appBar}>
                 <Toolbar className={classes.toolbar}>
                     <Typography component="h1" variant="h6" noWrap className={classes.title}>
                         Analyser
                     </Typography>
-                    <ProjectDialog />
+                    
                 </Toolbar>
             </AppBar>
 
@@ -39,7 +41,7 @@ const Main = () => {
             </Drawer>
 
             <main className={classes.content}>
-            <SnackbarFeedback />
+                
                 <div className={classes.appBarSpacer} /> 
                 <Container maxWidth="xl" className={classes.container}>
                     <Switch>
