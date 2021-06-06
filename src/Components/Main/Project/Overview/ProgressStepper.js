@@ -1,9 +1,7 @@
-import { Box, Button, Grid, makeStyles, Step, StepLabel, Stepper, Typography } from "@material-ui/core";
-import { MaximizeTwoTone } from "@material-ui/icons";
+import { Button, makeStyles, Step, StepLabel, Stepper} from "@material-ui/core";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { stepNextProject } from "../../../Action_Creators/projectActions";
-import { optionalSteps, ProjectSteps } from "../../../Model/Project";
+import { useDispatch } from "react-redux";
+import { optionalSteps, ProjectSteps } from "../../../../Model/Project";
 
 
 const useStyles = makeStyles(theme => ({
@@ -33,7 +31,7 @@ const ProgressStepper = (props) => {
 
     const classes = useStyles();
     const dispatch = useDispatch();
-    const { id, step } = props.project;
+    const step = 0;
 
     const handleSkip = () => {
         //dispatch(stepNextProject(id))

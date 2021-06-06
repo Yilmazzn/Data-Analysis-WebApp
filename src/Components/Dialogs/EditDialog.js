@@ -19,7 +19,6 @@ const EditDialog = (props) => {
     const handleEdit = () => {
         if(!nameError){
             dispatch(editProject(projectId, name, desc));
-            dispatch(showSnackbar("info", `Renamed to ${name}`))
             setOpen(false);
         }   
     }

@@ -1,12 +1,14 @@
 import { combineReducers } from "redux"
-import projectDetailReducer from "./projectDetailReducer"
+import loadingReducer from "./loadingReducer"
+import dataReducer from "./dataReducer"
 import projectReducer from './projectReducer'
 import snackbarReducer from './snackbarReducer'
 
 const rootReducer = combineReducers({
     projects: projectReducer,
-    projectDetails: projectDetailReducer,
-    snackbar: snackbarReducer
+    data: dataReducer,
+    snackbar: snackbarReducer,
+    loading: loadingReducer
 })
 
 

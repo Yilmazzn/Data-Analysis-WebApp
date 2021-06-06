@@ -1,16 +1,21 @@
 import Type from './actionTypes'
 import firebase from '../firebase'
 import { showSnackbar } from './snackbarActions';
+import { setLoadingState } from './loadingActions';
 
 const firestore = firebase.firestore();
 
 export const addProject = (name, desc, tags) => async (dispatch) => {
-
+    dispatch(setLoadingState(true))
     const _id = ID();
+    const date = new Date();
     const project = {
         name: name, 
         description: desc, 
-        tags: tags
+        tags: tags,
+        createdAt: String(date.getDate()).padStart(2, "0")
+                    + "." + String(date.getMonth() + 1).padStart(2, "0")
+                    + "." + date.getFullYear()
     }
     firestore.collection('projects').doc(_id).set(project)
         .then(() => {
@@ -21,9 +26,13 @@ export const addProject = (name, desc, tags) => async (dispatch) => {
             console.error(error);
             dispatch(showSnackbar("error", "There was an error. Project could not be created"));
         })
+        .finally(
+            dispatch(setLoadingState(false))
+        ) 
 } 
 
 export const editProject = (id, name, desc) => async (dispatch) => {
+    dispatch(setLoadingState(true))
     firebase.firestore().collection('projects').doc(id).update({
         name: name, 
         description: desc
@@ -35,11 +44,14 @@ export const editProject = (id, name, desc) => async (dispatch) => {
         .catch(error => {
             console.error(error);
             dispatch(showSnackbar("error", "There was an error. Project could not be edited"));
-        });
-
+        })
+        .finally(
+            dispatch(setLoadingState(false))
+        ) 
 }
 
 export const deleteProject = (id) => async (dispatch) => {
+    dispatch(setLoadingState(true))
     firebase.firestore().collection('projects').doc(id).delete()
         .then(() => {
             dispatch({ type: Type.DELETE_PROJECT, payload: id });
@@ -49,21 +61,28 @@ export const deleteProject = (id) => async (dispatch) => {
             console.error(error);
             dispatch(showSnackbar("error", "Error while trying to communicate with the server"));
         })
+        .finally(
+            dispatch(setLoadingState(false))
+        ) 
 }
 
-export const fetchProjects = (setLoading) => async(dispatch) => {
-firebase.firestore().collection('projects').onSnapshot(
-    querySnapshot => {
-        if (!querySnapshot.metadata.hasPendingWrites){
-            let projects = []
-            querySnapshot.forEach(doc => projects.push({...doc.data(), id:doc.id}));
-            dispatch({ type:Type.FETCH_PROJECTS, payload:projects });
-        }
-        setLoading(false);
-    }, error => {
-        console.error(error);
-        dispatch(showSnackbar("error", "Server Error 501"))
-    })
+export const fetchProjects = () => async(dispatch) => {
+    dispatch(setLoadingState(true))
+    firebase.firestore().collection('projects').get()
+        .then(querySnapshot => {
+            let projects = [];
+            querySnapshot.forEach(doc => {
+                projects.push({ ...doc.data(), id: doc.id })
+            })
+            dispatch({type: Type.FETCH_PROJECTS, payload: projects})
+        })
+        .catch(error => {
+            console.error(error);
+            dispatch(showSnackbar("error", "Server Error"))
+        })
+        .finally(
+            dispatch(setLoadingState(false))
+        ) 
 };
 
 // Generates IDs

@@ -1,11 +1,12 @@
-import { CircularProgress, Container, Grid, LinearProgress, makeStyles, Typography } from "@material-ui/core";
+import { CircularProgress, Container, Grid, makeStyles, Typography } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import ProjectDialog from "./ProjectDialog";
 import ProjectCard from "./ProjectCard";
 import { useEffect, useState } from "react";
-import firebase from '../../../firebase'
 import React from "react";
 import { fetchProjects } from "../../../Action_Creators/projectActions";
+import LoadingComponent from "../../Loading/LoadingComponent";
+import { setLoadingState } from "../../../Action_Creators/loadingActions";
 
 const useStyles = makeStyles(theme => ({
     cardItem: {
@@ -14,15 +15,6 @@ const useStyles = makeStyles(theme => ({
     container: {
         overflowX: 'hidden', 
         padding: theme.spacing(1)
-    },
-    loading: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    loadingText: {
-        paddingTop: theme.spacing(2)
     }
 }))
 
@@ -31,21 +23,18 @@ const Dashboard = () => {
 
     const projects = useSelector(state => state.projects)
     const classes = useStyles();
-    const [loading, setLoading] = useState(true);
+    const loading = useSelector(state => state.loading)
 
     // Load all projects into redux store
     const dispatch = useDispatch()
+    
     useEffect(() => {
-        dispatch(fetchProjects(setLoading));
+        dispatch(fetchProjects());
     }, [])
-
 
     if(loading){
         return(
-            <Container className={classes.loading}>
-                <CircularProgress />
-                <Typography variant="body2" className={classes.loadingText}>Loading Projects...</Typography>
-            </Container>
+            <LoadingComponent text="Loading Projects..." />
         )
     }
 

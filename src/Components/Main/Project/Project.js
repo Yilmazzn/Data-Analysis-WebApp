@@ -1,9 +1,8 @@
-import { Box, Card, CardActions, CardContent, Container, Grid, makeStyles, Paper, Stepper, Tab, Tabs, Typography } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import { Container, makeStyles, Paper,  Tab, Tabs } from "@material-ui/core";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { ProjectSteps } from "../../../Model/Project";
+import DataView from "./DataView/DataView";
 import Overview from "./Overview/Overview";
-import ProgressStepper from "./ProgressStepper";
 
 const useStyles = makeStyles(theme => ({
     stepper: {
@@ -21,10 +20,16 @@ const useStyles = makeStyles(theme => ({
     },
     tab: {
         marginTop: theme.spacing(-2.5),
-        marginBottom: theme.spacing(3)
+        marginBottom: theme.spacing(5)
     },
     container: {
-
+        scrollbarWidth: 'none',   // Firefox
+        msOverflowStyle: 'none',  // IE
+        '&::-webkit-scrollbar': {
+          display: 'none'
+        },
+        overflowX: 'hidden',
+        overflowY: 'scroll'
     }
 }))
 
@@ -45,9 +50,10 @@ const Project = (props) => {
                 {tabs.map((tab, index) => <Tab label={tab} key={index} />)}
             </Tabs>
         </Paper>
-            <Container disableGutters className={classes.container}>
-                {view === 0 && <Overview project={project}/>}
-            </Container>
+        <Container disableGutters className={classes.container}>
+            {view === 0 && <Overview project={project}/>}
+            {view === 1 && <DataView project={project}/>}
+        </Container>
         </React.Fragment>
      );
 }

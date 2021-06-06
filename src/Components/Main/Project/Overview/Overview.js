@@ -1,8 +1,18 @@
 import { Box, Typography } from "@material-ui/core";
+import { useState } from "react";
+import LoadingComponent from "../../../Loading/LoadingComponent";
 
 const Overview = props => {
 
     const {project} = props; 
+
+    const [loading, setLoading ] = useState(typeof project === "undefined")
+
+    if (loading) {
+        return (
+            <LoadingComponent text="Loading Project..." />
+        );
+    }
 
     return ( 
         <div>
