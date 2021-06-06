@@ -1,39 +1,70 @@
 import Type from './actionTypes'
+import firebase from '../firebase'
+import { showSnackbar } from './snackbarActions';
 
-export const addProject = (project) => {
-    return {
-        type: Type.ADD_PROJECT,
-        payload: {
-            id: ID(),
-            name: project.name, 
-            description: project.description,
-            category: project.category,
-            step: 0
-        }
+const firestore = firebase.firestore();
+
+export const addProject = (name, desc, tags) => async (dispatch) => {
+
+    const _id = ID();
+    const project = {
+        name: name, 
+        description: desc, 
+        tags: tags
     }
+    firestore.collection('projects').doc(_id).set(project)
+        .then(() => {
+            dispatch({ type: Type.ADD_PROJECT, payload: {...project, id:_id } });
+            dispatch(showSnackbar("success", `${name} successfully created`));
+        })
+        .catch(error => {
+            console.error(error);
+            dispatch(showSnackbar("error", "There was an error. Project could not be created"));
+        })
 } 
 
-export const editProject = (id, name, desc) => {
-    return {
-        type: Type.EDIT_PROJECT, 
-        payload: {id: id, newName: name, newDesc: desc}
-    }
+export const editProject = (id, name, desc) => async (dispatch) => {
+    firebase.firestore().collection('projects').doc(id).update({
+        name: name, 
+        description: desc
+    })
+        .then(() => {
+            dispatch({ type: Type.EDIT_PROJECT, payload: {newName: name, newDesc: desc, id:id } });
+            dispatch(showSnackbar("info", `${name} edited`));
+        })
+        .catch(error => {
+            console.error(error);
+            dispatch(showSnackbar("error", "There was an error. Project could not be edited"));
+        });
+
 }
 
-export const deleteProject = (id) => {
-    return {
-        type: Type.DELETE_PROJECT, 
-        payload: id
-    }
+export const deleteProject = (id) => async (dispatch) => {
+    firebase.firestore().collection('projects').doc(id).delete()
+        .then(() => {
+            dispatch({ type: Type.DELETE_PROJECT, payload: id });
+            dispatch(showSnackbar("info", `Project was deleted`))
+        })
+        .catch(error => {
+            console.error(error);
+            dispatch(showSnackbar("error", "Error while trying to communicate with the server"));
+        })
 }
 
-
-export const stepNextProject = id =>  {
-    return {
-        type: Type.STEP_NEXT_PROJECT,
-        payload: id
-    }
-}
+export const fetchProjects = (setLoading) => async(dispatch) => {
+firebase.firestore().collection('projects').onSnapshot(
+    querySnapshot => {
+        if (!querySnapshot.metadata.hasPendingWrites){
+            let projects = []
+            querySnapshot.forEach(doc => projects.push({...doc.data(), id:doc.id}));
+            dispatch({ type:Type.FETCH_PROJECTS, payload:projects });
+        }
+        setLoading(false);
+    }, error => {
+        console.error(error);
+        dispatch(showSnackbar("error", "Server Error 501"))
+    })
+};
 
 // Generates IDs
 var ID = function () {

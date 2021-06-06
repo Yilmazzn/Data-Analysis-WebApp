@@ -72,7 +72,9 @@ const ProjectCard = (props) => {
             }/>
             <Divider />
             <CardContent>
-                <Chip variant="outlined" color="primary" label={project.category} className={classes.tag}/>
+                {project.tags.map(tag => 
+                    <Chip variant="outlined" color="primary" label={tag} className={classes.tag} key={tag}/>
+                )}
                 <LinearProgress variant="determinate" value={33} />
             </CardContent>
             <Divider />

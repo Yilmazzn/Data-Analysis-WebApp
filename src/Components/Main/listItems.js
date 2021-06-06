@@ -21,7 +21,7 @@ export const MainListItems = (props) => {
 
   return (
     <div>
-      <ListItem button component="button" onClick={() => loadPage('/')}>
+      <ListItem button component="button" onClick={() => loadPage('/dashboard')}>
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>

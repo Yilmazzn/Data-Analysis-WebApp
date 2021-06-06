@@ -36,7 +36,7 @@ const ProgressStepper = (props) => {
     const { id, step } = props.project;
 
     const handleSkip = () => {
-        dispatch(stepNextProject(id))
+        //dispatch(stepNextProject(id))
     }
 
     return ( 

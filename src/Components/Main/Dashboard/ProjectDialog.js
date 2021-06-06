@@ -2,16 +2,22 @@ import { Button, Chip, Collapse, Dialog, DialogActions, DialogContent, DialogCon
 import { Add } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { addProject } from "../../Action_Creators/projectActions";
-import { showSnackbar } from "../../Action_Creators/snackbarActions";
+import { addProject } from "../../../Action_Creators/projectActions";
+import { showSnackbar } from "../../../Action_Creators/snackbarActions";
 
 
 const useStyles = makeStyles(theme => ({
   addButton: {
-    margin: theme.spacing(1),
+    marginTop: theme.spacing(-3),
+    marginBottom: theme.spacing(1),
+    marginRight: theme.spacing(-2),
+    transition: theme.transitions.create(['height']),
+    position: 'fixed',
+    float: 'right'
+  },
+  over: {
     display: 'flex',
-    justifyContent: 'space-between',
-    transition: theme.transitions.create(['height'])
+    justifyContent: 'flex-end'
   }
 }))
 
@@ -27,18 +33,13 @@ const ProjectDialog = () => {
 
     const dispatch = useDispatch();
 
+
     const handleCreate = () => {
       if(!nameError && name !== ""){
         setOpen(false);
 
         // Submitted form
-        dispatch(addProject({
-          name: name, 
-          description: description,
-          category: 'Model'
-        }))
-
-        dispatch(showSnackbar("success", `Project '${name}' created`))
+        dispatch(addProject(name, description, ["Model"]));
 
         handleClose()
 
@@ -58,14 +59,16 @@ const ProjectDialog = () => {
     return ( 
       <React.Fragment>
       {/* Button */}
-      <Tooltip title="Create new project">
-        <Fab aria-label="add" variant="extended" onClick={() => setOpen(true)} onMouseOver={() => setButtonHover(true)} onMouseLeave={() => setButtonHover(false)} size="small" color="primary" className={classes.addButton}>
-          <Add />
-          <Collapse collapsedHeight='0px' in={buttonHover} orientation="horizontal">
-            {buttonHover && <Typography>Project</Typography>}
-          </Collapse>
-        </Fab>
-      </Tooltip>
+      <div className={classes.over}>
+        <Tooltip title="Create a new project">
+          <Fab aria-label="add" variant="extended" onClick={() => setOpen(true)} onMouseOver={() => setButtonHover(true)} onMouseLeave={() => setButtonHover(false)} size="small" color="primary" className={classes.addButton}>
+            <Add />
+            <Collapse collapsedHeight='0px' in={buttonHover} orientation="horizontal">
+              {buttonHover && <Typography>Project</Typography>}
+            </Collapse>
+          </Fab>
+        </Tooltip>
+      </div>
       {/* Dialog */}
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">New Project</DialogTitle>

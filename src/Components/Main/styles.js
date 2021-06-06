@@ -6,6 +6,7 @@ const drawerWidth = 200
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
+        overflow: 'hidden'
       },
       toolbar: {
         paddingRight: 24, // keep right padding when drawer closed
@@ -41,9 +42,15 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1,
         flexDirection: 'row',
         height: '100vh',
-        overflow: 'hidden',
         background: `linear-gradient(#303342, #6a708f);`,
-        zIndex: theme.zIndex.drawer - 1
+        zIndex: theme.zIndex.drawer - 1,
+        scrollbarWidth: 'none',   // Firefox
+        msOverflowStyle: 'none',  // IE
+        '&::-webkit-scrollbar': {
+          display: 'none'
+        },
+        overflowX: 'hidden',
+        overflowY: 'scroll'
       },
       container: {
         paddingTop: theme.spacing(4),

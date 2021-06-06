@@ -4,14 +4,7 @@ const projectReducer = (state = [], action) => {
     switch(action.type){
 
         case Type.ADD_PROJECT:
-            return [...state, {
-                id: action.payload.id,
-                name: action.payload.name, 
-                description: action.payload.description,
-                category: action.payload.category,
-                step: 0
-            }];
-
+            return [...state, action.payload];
         case Type.EDIT_PROJECT: 
             return state.map(
                 p => p.id !== action.payload.id ? p : 
@@ -23,6 +16,9 @@ const projectReducer = (state = [], action) => {
         case Type.STEP_NEXT_PROJECT: 
             return state.map(p => p.id === action.payload ? {...p, step: p.step + 1} : p)
 
+        case Type.FETCH_PROJECTS: 
+            return action.payload;
+        
         default: 
         return state;
     }
